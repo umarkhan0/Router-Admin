@@ -1,9 +1,9 @@
 import BasicCard from '../components/deshbord.jsx';
-import ChartComponent from '../components/chart.jsx';
+import Containd from "../components/homeContaind.jsx"
 const Home = () => {
     return(
         <>
-        <BasicCard />
+        <BasicCard home={Containd} />
        
         </>
     )

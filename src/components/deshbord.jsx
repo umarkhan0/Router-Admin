@@ -12,14 +12,10 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import CardUser from "./card.jsx";
 import Badge from '@mui/material/Badge';
 import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
-import ChartComponent from "./chart.jsx";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import List from "@mui/material/List";
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import ListItem from "@mui/material/ListItem";
@@ -32,12 +28,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button, Stack } from "@mui/material";
-import TransitionsModal from "./modal.jsx";
 import Logo from "../images/logo.png"
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
+  let navigate = useNavigate()
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -54,7 +50,9 @@ function ResponsiveDrawer(props) {
         />
       </div>
       <List>
-        <ListItem key={"Deshbord"}>
+        <ListItem 
+        onClick={() => navigate("/")}
+        key={"Deshbord"}>
           <ListItemButton
             style={{
               width: "100%",
@@ -75,7 +73,9 @@ function ResponsiveDrawer(props) {
             />
           </ListItemButton>
         </ListItem>
+       
         <ListItem
+        onClick={() => navigate("/product")}
           style={{
             color: "#001f3f",
           }}
@@ -298,47 +298,15 @@ function ResponsiveDrawer(props) {
         <Toolbar />
 
         
-        <div className='main-cards'>
-            <div className='card cursor-pointer'>
-                <div className='card-inner'>
-                    <h3>PRODUCTS</h3>
-                    <Inventory2RoundedIcon style={{
-                      color: "#fff"
-                    }}/>
-                </div>
-                <h1>300</h1>
-            </div>
-            <div className='card cursor-pointer'>
-                <div className='card-inner'>
-                    <h3>CATEGORIES</h3>
-                    <GridViewRoundedIcon style={{
-                      color: "#fff"
-                    }}/>
-                </div>
-                <h1>12</h1>
-            </div>
-            <div className='card cursor-pointer'>
-                <div className='card-inner'>
-                    <h3>CUSTOMERS</h3>
-                    <GroupsRoundedIcon style={{
-                      color: "#fff"
-                    }}/>
-                </div>
-                <h1>33</h1>
-            </div>
-            <div className='card cursor-pointer'>
-                <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <NotificationsActiveRoundedIcon style={{
-                      color: "#fff"
-                    }}/>
-                </div>
-                <h1>42</h1>
-            </div>
-        </div>
-        <div className=' w-[88%] flex justify-center sm:w-[100%]'>
-        <ChartComponent />
-        </div>
+      
+<props.home />
+
+
+
+
+
+
+
       </Box>
     </Box>
   );
