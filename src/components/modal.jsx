@@ -24,11 +24,14 @@ const style = {
   maxHeight: '84vh',
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%", // Set a percentage width for better responsiveness
+  width: "100%", // Set a percentage width for better responsiveness
   maxWidth: 440, // Set a maximum width to prevent it from getting too wide
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
   p: 1.5,
 };
 
@@ -236,7 +239,7 @@ export default function TransitionsModal() {
                       component="form"
                       sx={{
                         '& .MuiTextField-root': { width: '100%' },
-                        '& .MuiInputLabel-outlined': { color: '#001f3f' },
+                        '& .MuiInputLabel-outlined': { color: '#001f3f !important' },
                         '& .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f !important' },
                       }}
                       noValidate

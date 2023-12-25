@@ -106,12 +106,14 @@ function ResponsiveDrawer(props) {
           <ListItemButton>
             <ListItemIcon>
               <GridViewRoundedIcon
+                onClick={() => navigate("/catagries")}
                 style={{
                   color: "#001f3f",
                 }}
               />
             </ListItemIcon>
             <ListItemText
+          
               style={{
                 color: "#001f3f",
               }}
@@ -119,6 +121,7 @@ function ResponsiveDrawer(props) {
             />
           </ListItemButton>
         </ListItem>  <ListItem
+        onClick={() => navigate("/customers")}
           style={{
             color: "#001f3f",
           }}
