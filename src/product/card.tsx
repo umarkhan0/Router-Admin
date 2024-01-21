@@ -9,6 +9,10 @@ import Button from '@mui/material/Button';
 import { CardActionArea } from '@mui/material';
 import TextRating from './stars';
 export default function ActionAreaCard() {
+  const handleModalSubmit = (data) => {
+    console.log('Data received in App:', data);
+    // You can do whatever you want with the data here
+  };
   return (
     <Card sx={{ maxWidth: 230 , margin: "auto" }}>
       <div >
@@ -29,13 +33,13 @@ export default function ActionAreaCard() {
           </Typography>
           <div className=' flex justify-between'>
           <Stack spacing={2} direction="row">
-          {/* <Button sx={{ width: { sm: 30 , xs: 10 } , padding: {sm: 1 , xs: 0.2} , fontSize: {sm: 12 , xs: 10} }}  variant="contained" style={{ backgroundColor: '#001f3f' }} >Edit</Button> */}
-          <TransitionsModal />
+          <TransitionsModal onDataUpdate={handleModalSubmit}  paddingy="10px" paddingx="20px" name={"Edit"} />
           </Stack>
           <Stack spacing={2} direction="row">
           <Button sx={{ width: { sm: 30 , xs: 10 } , padding: {sm: 1 , xs: 0.2} , fontSize: {sm: 12 , xs: 10} }}  variant="contained" style={{ backgroundColor: '#001f3f' }} >Delete</Button>
           </Stack>
           </div>
+          
         </CardContent>
       </div>
     </Card>

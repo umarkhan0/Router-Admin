@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -10,9 +11,9 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import TextField from '@mui/material/TextField';
 import { Stack, Input } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { Celebration } from "@mui/icons-material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import CustomizedSnackbars from "./Snackbar";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 // import InputForm from "./input.jsx";
@@ -35,8 +36,19 @@ const style = {
   p: 1.5,
 };
 
-export default function TransitionsModal() {
+export default function TransitionsModal(props) {
+
+  const { paddingx, paddingy } = props || {};
   const [open, setOpen] = React.useState(false);
+  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState("");
+  const [price, setPrice] = useState("");
+  const [alertText, setAlrtText] = useState("")
+  const [discription, setDiscription] = useState("");
+  const [firstImage, setFirstImage] = useState(null);
+  const [secondImage, setSecondImage] = useState(null);
+  const [thirdImage, setThirdImage] = useState(null);
+  const [hendleOpen, setHendleOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [image, setImage] = React.useState("https://demotix.com/wp-content/uploads/2019/07/web-design5-1170x658.jpg");
@@ -45,9 +57,11 @@ export default function TransitionsModal() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      setFirstImage(file)
     }
   }
   const handleImageChange1 = (e) => {
@@ -55,6 +69,7 @@ export default function TransitionsModal() {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage1(imageUrl);
+      setSecondImage(file)
     }
   }
   const handleImageChange2 = (e) => {
@@ -62,19 +77,68 @@ export default function TransitionsModal() {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage2(imageUrl);
+      setThirdImage(file)
     }
   }
-  const [age, setAge] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+
+
+  const handleSubmit = () => {
+    console.log(firstImage);
+    if (title.trim() && rating != "" && discription.trim() && firstImage != null && secondImage != null && price.trim()) {
+
+      let data = {
+        title,
+        rating,
+        discription,
+        price,
+        firstImage,
+        secondImage,
+        thirdImage,
+      }
+      props.onDataUpdate(data);
+
+    } else {
+      console.log("no valid");
+      switch (true) {
+        case !title.trim():
+          alertTextFun("Title is required");
+          break;
+        case !discription.trim():
+          alertTextFun("Description is required");
+          break;
+        case rating === "":
+          alertTextFun("Rating is required");
+          break;
+        case !price.trim():
+          alertTextFun("Price is required");
+          break;
+        case firstImage === null:
+          alertTextFun("First Image is required");
+          break;
+        case secondImage === null:
+          alertTextFun("Second Image is required");
+          break;
+        default:
+          console.error("else");
+      }
+
+    }
+  }
+  const alertTextFun = (errorTextPra) => {
+    setHendleOpen(true)
+    setAlrtText(errorTextPra)
+  }
+  const handleSnackbarClose = () => {
+    setHendleOpen(false);
   };
+
   return (
     <div className="rounded">
-
       <Stack spacing={2} direction="row">
-        <Button onClick={handleOpen} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >Edit</Button>
+        <div className={` cursor-pointer rounded text-[#fff]`} onClick={handleOpen} variant="contained" style={{ backgroundColor: '#001f3f', padding: `${paddingy}  ${paddingx}` }} >{props.name}</div>
       </Stack>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -88,6 +152,7 @@ export default function TransitionsModal() {
           },
         }}
       >
+
         <Fade in={open}>
           <Box sx={style}>
             <div >
@@ -228,7 +293,9 @@ export default function TransitionsModal() {
                     noValidate
                     autoComplete="off"
                   >
-                    <TextField id="outlined-basic" label="Title" variant="outlined" />
+                    <TextField onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title"
+                      inputProps={{ maxLength: 45 }}
+                      variant="outlined" />
                   </Box>
 
 
@@ -249,6 +316,7 @@ export default function TransitionsModal() {
                         <TextField
                           id="outlined-multiline-flexible"
                           label="Description"
+                          onChange={(e) => setDiscription(e.target.value)}
                           multiline
                           maxRows={4}
                         />
@@ -271,13 +339,13 @@ export default function TransitionsModal() {
                     <FormControl sx={{ width: '100%', '& .MuiInputBase-root': { height: '50px' } }} size="small">
                       <InputLabel id="demo-select-small-label"
                         sx={{ color: '#001f3f !important' }}
-                      >Age</InputLabel>
+                      >Rating</InputLabel>
                       <Select
                         labelId="demo-select-small-label"
                         id="demo-select-small"
-                        value={age}
-                        label="Age"
-                        onChange={handleChange}
+                        value={rating}
+                        label="Rating"
+                        onChange={(event) => setRating(event.target.value)}
                         sx={{
                           '& .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f !important', },
                           '& .MuiInputLabel-outlined': { color: '#001f3f !important' },
@@ -288,14 +356,14 @@ export default function TransitionsModal() {
                         </MenuItem>
                         <MenuItem value={10}>  0.5: 'Useless'</MenuItem>
                         <MenuItem value={20}>1: 'Useless+'</MenuItem>
-                        <MenuItem value={20}> 1.5: 'Poor'</MenuItem>
-                        <MenuItem value={20}> 2: 'Poor+'</MenuItem>
-                        <MenuItem value={20}> 2.5: 'Ok'</MenuItem>
-                        <MenuItem value={20}> 3: 'Ok+'</MenuItem>
-                        <MenuItem value={20}> 3.5: 'Good'</MenuItem>
-                        <MenuItem value={20}> 4: 'Good+'</MenuItem>
-                        <MenuItem value={20}> 4.5: 'Excellent'</MenuItem>
-                        <MenuItem value={20}> 5: 'Excellent+'</MenuItem>
+                        <MenuItem value={30}> 1.5: 'Poor'</MenuItem>
+                        <MenuItem value={40}> 2: 'Poor+'</MenuItem>
+                        <MenuItem value={50}> 2.5: 'Ok'</MenuItem>
+                        <MenuItem value={60}> 3: 'Ok+'</MenuItem>
+                        <MenuItem value={70}> 3.5: 'Good'</MenuItem>
+                        <MenuItem value={80}> 4: 'Good+'</MenuItem>
+                        <MenuItem value={90}> 4.5: 'Excellent'</MenuItem>
+                        <MenuItem value={100}> 5: 'Excellent+'</MenuItem>
 
                       </Select>
                     </FormControl>
@@ -314,21 +382,30 @@ export default function TransitionsModal() {
                       autoComplete="off"
                     >
                       <TextField
-                      defaultValue={42}
-                      type="number" id="outlined-basic" label="Rs." variant="outlined" />
+                        // defaultValue={42}
+                        onChange={(e) => setPrice(e.target.value)}
+                        type="number" id="outlined-basic" label="Rs." variant="outlined" />
                     </Box>
                   </div>
                 </div>
                 <div className=" flex justify-center">
-                <Stack spacing={2} direction="row">
-        <Button onClick={handleOpen} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >Edit</Button>
-      </Stack>
+                  <Stack spacing={2} direction="row">
+                    <Button onClick={() => {
+                      handleOpen()
+                      handleSubmit()
+                    }} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >Edit</Button>
+                  </Stack>
                 </div>
+                <CustomizedSnackbars
+                  inform={{ openh: hendleOpen, title: alertText, icon: "error" }}
+                  onClose={handleSnackbarClose}
+                />
               </div>
             </div>
           </Box>
         </Fade>
       </Modal>
+
     </div>
   );
 }

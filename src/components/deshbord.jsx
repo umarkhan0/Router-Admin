@@ -26,9 +26,9 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Logo from "../images/logo.png"
+import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
@@ -103,10 +103,16 @@ function ResponsiveDrawer(props) {
           }}
         
         >
-          <ListItemButton>
-            <ListItemIcon>
+          <ListItemButton
+          
+          onClick={() => navigate("/catagries")}
+          
+          >
+            <ListItemIcon
+            
+            
+            >
               <GridViewRoundedIcon
-                onClick={() => navigate("/catagries")}
                 style={{
                   color: "#001f3f",
                 }}
@@ -246,7 +252,6 @@ function ResponsiveDrawer(props) {
                
                
                </Stack>
-                        {/* <TransitionsModal /> */}
                         
               </Box>
            
@@ -311,6 +316,7 @@ function ResponsiveDrawer(props) {
 
 
       </Box>
+    
     </Box>
   );
 }
