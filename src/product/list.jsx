@@ -2,12 +2,34 @@ import ActionAreaCard from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import TransitionsModal from "../components/modal";
 import { Stack , Button } from "@mui/material";
+import { baseURL } from "../constant/const";
+import axios from "axios";
 const ListProduct = () => {
     let openModal =  () => {
         return  ( <TransitionsModal />)
     }
-    const handleModalSubmit = (data) => {
+    let token = localStorage.getItem("Sign")
+    const handleModalSubmit = async (data) => {
         console.log('Data received in App:', data);
+       try{
+        const response = await axios.post(
+            `${baseURL}postProduct`,
+            data,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+
+
+          console.log(response);
+        }catch(error){
+console.log(error);
+        }
+          console.log("Response from server:", response.data);
         // You can do whatever you want with the data here
       };
     return (

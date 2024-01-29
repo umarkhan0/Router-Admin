@@ -170,7 +170,7 @@ export default function TransitionsModal(props) {
                   <input
                     style={{ display: "none" }}
                     type="file"
-                    name=""
+                    name="images"
                     id="get-img"
                     onChange={handleImageChange}
                   />
@@ -212,7 +212,7 @@ export default function TransitionsModal(props) {
                   <input
                     style={{ display: "none" }}
                     type="file"
-                    name=""
+                    name="images"
                     id="get-img1"
                     onChange={handleImageChange1}
                   />
@@ -253,7 +253,7 @@ export default function TransitionsModal(props) {
                   <input
                     style={{ display: "none" }}
                     type="file"
-                    name=""
+                    name="images"
                     id="get-img2"
                     onChange={handleImageChange2}
                   />
@@ -293,7 +293,7 @@ export default function TransitionsModal(props) {
                     noValidate
                     autoComplete="off"
                   >
-                    <TextField onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title"
+                    <TextField name="title" onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title"
                       inputProps={{ maxLength: 45 }}
                       variant="outlined" />
                   </Box>
@@ -314,6 +314,7 @@ export default function TransitionsModal(props) {
                     >
                       <div>
                         <TextField
+                        name="description"
                           id="outlined-multiline-flexible"
                           label="Description"
                           onChange={(e) => setDiscription(e.target.value)}
@@ -331,13 +332,9 @@ export default function TransitionsModal(props) {
                   </div>
 
 
-
-
-
-
                   <div className="mt-3">
                     <FormControl sx={{ width: '100%', '& .MuiInputBase-root': { height: '50px' } }} size="small">
-                      <InputLabel id="demo-select-small-label"
+                      <InputLabel  id="demo-select-small-label"
                         sx={{ color: '#001f3f !important' }}
                       >Rating</InputLabel>
                       <Select
