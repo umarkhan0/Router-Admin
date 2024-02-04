@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import AlignItemsList from "./userCart";
+import { useSelector , useDispatch } from "react-redux";
+import { getCustomers } from "../redux/Features/Custumers/getCustumersSlice";
 const CartCoustomer =(prop) => {
-
-
+    const dispatch = useDispatch();
+    const { isLoading, error, res } = useSelector((state) => state?.getAllusers);
+useEffect(() => {
+dispatch(getCustomers())
+} , [])
+// console.log(res.users);
     // console.log(prop);
     // const {id ,  courseName , name , password , img } = prop;
     // console.log(img);
@@ -20,21 +27,13 @@ const CartCoustomer =(prop) => {
 
 
 
-
-
    
-<AlignItemsList />
-<AlignItemsList />
-<AlignItemsList />
+    {res?.users && res.users.map((user, index) => (
+                <div key={index}>
+                    <AlignItemsList name={user.name} email={user.email} /> 
+                </div>
+            ))}
 
-    {/* <div className=" flex justify-around w-full shadow-lg h-9 p-2 ">
-      <p className=" text-[#1775ce] font-[ralway] font-semibold">id</p>
-     <img className=" rounded"  src={img} alt="user img" />
-      <p className=" text-[#1775ce] font-[ralway] font-semibold">courseName</p>
-      <p className=" text-[#1775ce] font-[ralway] font-semibold">name</p>
-      <p className=" text-[#1775ce] font-[ralway] font-semibold">password</p>
-    </div> */}
-  
 
 
        </>

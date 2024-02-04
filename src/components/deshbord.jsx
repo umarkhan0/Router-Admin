@@ -1,32 +1,17 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-// import 
-// { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill}
-//  from '@mui/icons-material'
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import AppBar from "@mui/material/AppBar";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import Badge from '@mui/material/Badge';
 import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
-import ListItem from "@mui/material/ListItem";
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import { ListItemText, ListItemIcon, Box, CssBaseline, ListItemButton, Divider, ListItem, Drawer, List, Stack, Toolbar, IconButton, AppBar, Badge } from "@mui/material";
+
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import { Stack } from "@mui/material";
 import Logo from "../images/logo.png"
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
@@ -50,9 +35,9 @@ function ResponsiveDrawer(props) {
         />
       </div>
       <List>
-        <ListItem 
-        onClick={() => navigate("/")}
-        key={"Deshbord"}>
+        <ListItem
+          onClick={() => navigate("/")}
+          key={"Deshbord"}>
           <ListItemButton
             style={{
               width: "100%",
@@ -73,9 +58,9 @@ function ResponsiveDrawer(props) {
             />
           </ListItemButton>
         </ListItem>
-       
+
         <ListItem
-        onClick={() => navigate("/product")}
+          onClick={() => navigate("/product")}
           style={{
             color: "#001f3f",
           }}
@@ -101,16 +86,16 @@ function ResponsiveDrawer(props) {
           style={{
             color: "#001f3f",
           }}
-        
+
         >
           <ListItemButton
-          
-          onClick={() => navigate("/catagries")}
-          
+
+            onClick={() => navigate("/catagries")}
+
           >
             <ListItemIcon
-            
-            
+
+
             >
               <GridViewRoundedIcon
                 style={{
@@ -119,7 +104,7 @@ function ResponsiveDrawer(props) {
               />
             </ListItemIcon>
             <ListItemText
-          
+
               style={{
                 color: "#001f3f",
               }}
@@ -127,7 +112,7 @@ function ResponsiveDrawer(props) {
             />
           </ListItemButton>
         </ListItem>  <ListItem
-        onClick={() => navigate("/customers")}
+          onClick={() => navigate("/customers")}
           style={{
             color: "#001f3f",
           }}
@@ -223,38 +208,38 @@ function ResponsiveDrawer(props) {
             </div>
           </Box>
           <div className=" flex justify-end items-center w-full">
-          
-              <Box
-                variant="contained"
-                style={{
-                
-                  color: "#0073c9",
-                  display: "flex",
-                  width: "80px",
-                
-                  justifyContent: "space-between"
-                }}
-              >
-                <Stack spacing={4} direction="row" sx={{ color: 'action.active' }} className=" cursor-pointer">
-      <Badge color="secondary" badgeContent={99}>
-               <NotificationsActiveRoundedIcon style={{
-                backgroundColor: "#001f3f",
-                color: "#fff"
-               }} /> 
-               </Badge>
-               </Stack>
-               <Stack spacing={4} direction="row" sx={{ color: 'action.active' }}  className=" cursor-pointer">
-     
-               <LogoutRoundedIcon style={{
-                backgroundColor: "#001f3f",
-                color: "#fff"
-               }} /> 
-               
-               
-               </Stack>
-                        
-              </Box>
-           
+
+            <Box
+              variant="contained"
+              style={{
+
+                color: "#0073c9",
+                display: "flex",
+                width: "80px",
+
+                justifyContent: "space-between"
+              }}
+            >
+              <Stack spacing={4} direction="row" sx={{ color: 'action.active' }} className=" cursor-pointer">
+                <Badge color="secondary" badgeContent={99}>
+                  <NotificationsActiveRoundedIcon style={{
+                    backgroundColor: "#001f3f",
+                    color: "#fff"
+                  }} />
+                </Badge>
+              </Stack>
+              <Stack spacing={4} direction="row" sx={{ color: 'action.active' }} className=" cursor-pointer">
+
+                <LogoutRoundedIcon style={{
+                  backgroundColor: "#001f3f",
+                  color: "#fff"
+                }} />
+
+
+              </Stack>
+
+            </Box>
+
           </div>
         </Toolbar>
       </AppBar>
@@ -305,9 +290,9 @@ function ResponsiveDrawer(props) {
       >
         <Toolbar />
 
-        
-      
-<props.home />
+
+
+        <props.home />
 
 
 
@@ -316,7 +301,7 @@ function ResponsiveDrawer(props) {
 
 
       </Box>
-    
+
     </Box>
   );
 }

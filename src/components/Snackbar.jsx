@@ -1,7 +1,5 @@
 import React from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-
+import {Alert , Snackbar} from "@mui/material"
 export default function CustomizedSnackbars(props) {
   const [open, setOpen] = React.useState(false);
 

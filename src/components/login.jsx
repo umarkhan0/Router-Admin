@@ -1,11 +1,4 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {Grid , Checkbox , FormControlLabel , TextField , Button , Box , Typography , Container } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
   const navigate = useNavigate();

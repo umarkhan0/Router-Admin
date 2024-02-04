@@ -1,22 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import {Fade , Modal , Box , Backdrop , Button , Typography , Stack , Input , TextField , Select , FormControl , MenuItem , InputLabel } from "@mui/material"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import TextField from '@mui/material/TextField';
-import { Stack, Input } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import CustomizedSnackbars from "./Snackbar";
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-// import InputForm from "./input.jsx";
 const style = {
   position: "absolute",
   top: "50%",

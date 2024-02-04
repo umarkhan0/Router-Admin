@@ -2,15 +2,10 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../redux/Features/auth/authSclice';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import {Grid , Box , TextField , Typography , Button , Container} from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
+import { loginTrueFalse } from '../redux/Features/LoginConform/TFSlice';
 import Logo from '../images/logo.png';
 
 const style = {
@@ -65,7 +60,7 @@ export default function Login() {
     }
 
     if (token) {
-      navigate('/');
+      dispatch(loginTrueFalse());
     }
   }, [error, token, navigate]);
 

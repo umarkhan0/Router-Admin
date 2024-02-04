@@ -45,14 +45,12 @@ const ChartComponent = () => {
         data: data,
       });
       setChartInstance(myChart);
-
-      // Clean up when the component is unmounted
       return () => {
         myChart.destroy();
       };
     }
-  }, []); // Empty dependency array ensures that the effect runs only once
-
+  }, []); 
+  // Empty dependency array ensures that the effect runs only once
   useLayoutEffect(() => {
     const updateSize = () => {
       if (chartInstance) {
