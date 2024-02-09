@@ -48,6 +48,8 @@ export default function ScrollDialog(props) {
     };
 
     const descriptionElementRef = React.useRef(null);
+    const test = React.useRef(null);
+
     React.useEffect(() => {
         if (open) {
             const { current: descriptionElement } = descriptionElementRef;
