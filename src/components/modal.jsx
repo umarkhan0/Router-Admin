@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import {Fade , Modal , Box , Backdrop , Button , Typography , Stack , Input , TextField , Select , FormControl , MenuItem , InputLabel } from "@mui/material"
+import { Fade, Modal, Box, Backdrop, Button, Typography, Stack, Input, TextField, Select, FormControl, MenuItem, InputLabel } from "@mui/material"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
@@ -25,87 +25,66 @@ const style = {
 };
 
 export default function TransitionsModal(props) {
-
   const { paddingx, paddingy } = props || {};
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState("");
   const [price, setPrice] = useState("");
   const [alertText, setAlrtText] = useState("")
-  const [discription, setDiscription] = useState("");
-  const [firstImage, setFirstImage] = useState(null);
-  const [secondImage, setSecondImage] = useState(null);
-  const [thirdImage, setThirdImage] = useState(null);
+  // const [discription, setDiscription] = useState("");
   const [hendleOpen, setHendleOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [image, setImage] = React.useState("https://demotix.com/wp-content/uploads/2019/07/web-design5-1170x658.jpg");
-  const [image1, setImage1] = React.useState("https://demotix.com/wp-content/uploads/2019/07/web-design5-1170x658.jpg");
-  const [image2, setImage2] = React.useState("https://demotix.com/wp-content/uploads/2019/07/web-design5-1170x658.jpg");
+  const [image, setImage] = React.useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const [formData, setFormData] = useState({
+    title: '',
+    price: '',
+    files: [],
+    rating: '',
+    description: '',
+  });
+  // console.log(formData.files);
+  // console.log(formData.files[0]);
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-      setFirstImage(file)
-    }
-  }
-  const handleImageChange1 = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage1(imageUrl);
-      setSecondImage(file)
-    }
-  }
-  const handleImageChange2 = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage2(imageUrl);
-      setThirdImage(file)
-    }
-  }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === 'files' ? files : value,
+    }));
 
 
+  };
 
   const handleSubmit = () => {
-    console.log(firstImage);
-    if (title.trim() && rating != "" && discription.trim() && firstImage != null && secondImage != null && price.trim()) {
+    // console.log(formData);
+    //  console.log( formData.files);
+    console.log(formData.files);
 
-      let data = {
-        title,
-        rating,
-        discription,
-        price,
-        firstImage,
-        secondImage,
-        thirdImage,
-      }
-      props.onDataUpdate(data);
+
+    if (formData.title.trim() && formData.description.trim() && formData.rating != "" && formData.price != "" && formData.files[0] != undefined) {
+      props.onDataUpdate(formData);
 
     } else {
       console.log("no valid");
       switch (true) {
-        case !title.trim():
+        case !formData.title.trim():
           alertTextFun("Title is required");
           break;
-        case !discription.trim():
+        case !formData.description.trim():
           alertTextFun("Description is required");
           break;
-        case rating === "":
+        case !formData.price.trim():
           alertTextFun("Rating is required");
           break;
-        case !price.trim():
+        case formData.rating == "":
+          alertTextFun("Rating is required");
+        case formData.price == "":
           alertTextFun("Price is required");
           break;
-        case firstImage === null:
-          alertTextFun("First Image is required");
-          break;
-        case secondImage === null:
-          alertTextFun("Second Image is required");
+        case formData.files[0] == undefined:
+          alertTextFun("Atleast One Image");
           break;
         default:
           console.error("else");
@@ -158,9 +137,10 @@ export default function TransitionsModal(props) {
                   <input
                     style={{ display: "none" }}
                     type="file"
-                    name="images"
+                    name="files"
                     id="get-img"
-                    onChange={handleImageChange}
+                    multiple
+                    onChange={handleChange}
                   />
 
                   <img
@@ -186,88 +166,7 @@ export default function TransitionsModal(props) {
                     </div>
                   </label>
                 </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    position: "relative",
-                    justifyContent: "center",
-                  }}
-                >
-                  <input
-                    style={{ display: "none" }}
-                    type="file"
-                    name="images"
-                    id="get-img1"
-                    onChange={handleImageChange1}
-                  />
 
-                  <img
-                    src={image1}
-                    alt=""
-                    className="absolute w-[70px] sm:w-[90px] h-[70px] sm:h-[90px] rounded-sm"
-                  />
-
-                  <label
-                    className="absolute mt-1"
-                    htmlFor="get-img1"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "100%",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <div>
-                      <CameraAltIcon />
-                    </div>
-                  </label>
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    position: "relative",
-                    justifyContent: "center",
-                  }}
-                >
-                  <input
-                    style={{ display: "none" }}
-                    type="file"
-                    name="images"
-                    id="get-img2"
-                    onChange={handleImageChange2}
-                  />
-
-                  <img
-                    src={image2}
-                    alt=""
-                    className="absolute w-[70px] sm:w-[90px] h-[70px] sm:h-[90px] rounded-sm"
-                  />
-
-                  <label
-                    className="absolute mt-1"
-                    htmlFor="get-img2"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "100%",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <div>
-                      <CameraAltIcon />
-                    </div>
-                  </label>
-                </div>
               </div>
               <div>
                 <div className=" m-2">
@@ -281,7 +180,7 @@ export default function TransitionsModal(props) {
                     noValidate
                     autoComplete="off"
                   >
-                    <TextField name="title" onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title"
+                    <TextField name="title" onChange={handleChange} id="outlined-basic" label="Title"
                       inputProps={{ maxLength: 45 }}
                       variant="outlined" />
                   </Box>
@@ -302,10 +201,10 @@ export default function TransitionsModal(props) {
                     >
                       <div>
                         <TextField
-                        name="description"
+                          name="description"
                           id="outlined-multiline-flexible"
                           label="Description"
-                          onChange={(e) => setDiscription(e.target.value)}
+                          onChange={handleChange}
                           multiline
                           maxRows={4}
                         />
@@ -322,15 +221,19 @@ export default function TransitionsModal(props) {
 
                   <div className="mt-3">
                     <FormControl sx={{ width: '100%', '& .MuiInputBase-root': { height: '50px' } }} size="small">
-                      <InputLabel  id="demo-select-small-label"
+                      <InputLabel id="demo-select-small-label"
                         sx={{ color: '#001f3f !important' }}
                       >Rating</InputLabel>
                       <Select
                         labelId="demo-select-small-label"
                         id="demo-select-small"
-                        value={rating}
+                        name="rating"
+                        value={formData.rating}
                         label="Rating"
-                        onChange={(event) => setRating(event.target.value)}
+                        onChange={
+                          // setRating(event?.target?.value)
+                          handleChange
+                        }
                         sx={{
                           '& .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f !important', },
                           '& .MuiInputLabel-outlined': { color: '#001f3f !important' },
@@ -368,8 +271,8 @@ export default function TransitionsModal(props) {
                     >
                       <TextField
                         // defaultValue={42}
-                        onChange={(e) => setPrice(e.target.value)}
-                        type="number" id="outlined-basic" label="Rs." variant="outlined" />
+                        onChange={handleChange}
+                        type="number" id="outlined-basic" name="price" label="Rs." variant="outlined" />
                     </Box>
                   </div>
                 </div>

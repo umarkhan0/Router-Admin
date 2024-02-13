@@ -1,40 +1,42 @@
 import ActionAreaCard from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import TransitionsModal from "../components/modal";
-import { Stack , Button } from "@mui/material";
-import { baseURL } from "../constant/const";
+import { Stack, Button } from "@mui/material";
+import { useState } from "react";
+import { addProduct } from "../redux/Features/addProduct/addProductSlice";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 const ListProduct = () => {
-    let openModal =  () => {
-        return  ( <TransitionsModal />)
-    }
-    let token = localStorage.getItem("Sign")
-    const handleModalSubmit = async (data) => {
-        console.log('Data received in App:', data);
-       try{
-        const response = await axios.post(
-            `${baseURL}postProduct`,
-            data,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${token}`,
-              },
+    const { isLoading, res, error } = useSelector((state) => state.newProduct);
+
+    let dispatch = useDispatch();
+    const handleModalSubmit = async (formData) => {
+        const form = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key === 'files') {
+                for (let i = 0; i < value.length; i++) {
+                    form.append(`files`, value[i]); // Use the same key for each file
+                }
+            } else {
+                form.append(key, value);
             }
-          );
+        });
+
+        // Set a timeout for the API request (e.g., 10 seconds)
+        // const timeoutId = setTimeout(() => {
+        //     setLoading(false);
+        //     console.error('Request timed out');
+        // }, 10000); // 10 seconds timeout
+
+        dispatch(addProduct(form));
+        console.log(res, error);
+
+    };
 
 
-
-          console.log(response);
-        }catch(error){
-console.log(error);
-        }
-          console.log("Response from server:", response.data);
-        // You can do whatever you want with the data here
-      };
     return (
         <>
-        
+
             {/* <form> */}
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
@@ -78,14 +80,14 @@ console.log(error);
                     <ActionAreaCard />
                 </div>
 
- 
-          <div className=" fixed bottom-0 right-0 m-6 cursor-pointer bg-[#001f3f] p-4 rounded-full">
-                    <TransitionsModal  onDataUpdate={handleModalSubmit} name={<AddIcon sx={{ color: "#fff" }}  />}
-                    paddingy="0px" paddingx="0"
+
+                <div className=" fixed bottom-0 right-0 m-6 cursor-pointer bg-[#001f3f] p-4 rounded-full">
+                    <TransitionsModal onDataUpdate={handleModalSubmit} name={<AddIcon sx={{ color: "#fff" }} />}
+                        paddingy="0px" paddingx="0"
                     />
-                   
+
                 </div>
-               
+
 
             </div>
         </>
