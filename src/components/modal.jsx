@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useState } from "react";
-import { Fade, Modal, Box, Backdrop, Button, Typography, Stack, Input, TextField, Select, FormControl, MenuItem, InputLabel } from "@mui/material"
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Fade, Modal, Box, Backdrop, Button, Stack, Input, TextField, Select, FormControl, MenuItem, InputLabel } from "@mui/material"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CustomizedSnackbars from "./Snackbar";
 const style = {
@@ -13,7 +13,7 @@ const style = {
   maxHeight: '84vh',
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "100%", // Set a percentage width for better responsiveness
+  width: "100%",
   maxWidth: 440, // Set a maximum width to prevent it from getting too wide
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -25,17 +25,17 @@ const style = {
 };
 
 export default function TransitionsModal(props) {
+
+  const { res , isLoading , error } = useSelector((state) => state.newProduct);
+
+
   const { paddingx, paddingy } = props || {};
   const [open, setOpen] = React.useState(false);
-  const [title, setTitle] = useState("");
-  const [rating, setRating] = useState("");
-  const [price, setPrice] = useState("");
   const [alertText, setAlrtText] = useState("")
-  // const [discription, setDiscription] = useState("");
   const [hendleOpen, setHendleOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [image, setImage] = React.useState(null);
+  const image  = null;
 
   const [formData, setFormData] = useState({
     title: '',
@@ -44,11 +44,8 @@ export default function TransitionsModal(props) {
     rating: '',
     description: '',
   });
-  // console.log(formData.files);
-  // console.log(formData.files[0]);
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: name === 'files' ? files : value,
@@ -58,33 +55,33 @@ export default function TransitionsModal(props) {
   };
 
   const handleSubmit = () => {
-    // console.log(formData);
-    //  console.log( formData.files);
-    console.log(formData.files);
-
-
-    if (formData.title.trim() && formData.description.trim() && formData.rating != "" && formData.price != "" && formData.files[0] != undefined) {
+    
+    
+    if (formData.title.trim() && formData.description.trim() && formData.files.length < 4 && formData.rating !== "" && formData.price != "" && formData.files[0] != undefined) {
       props.onDataUpdate(formData);
 
     } else {
       console.log("no valid");
+      console.log(formData.files.length >= 4);
       switch (true) {
         case !formData.title.trim():
           alertTextFun("Title is required");
           break;
-        case !formData.description.trim():
-          alertTextFun("Description is required");
-          break;
-        case !formData.price.trim():
+          case !formData.description.trim():
+            alertTextFun("Description is required");
+            break;
+        case formData.rating === "":
           alertTextFun("Rating is required");
           break;
-        case formData.rating == "":
-          alertTextFun("Rating is required");
         case formData.price == "":
           alertTextFun("Price is required");
           break;
         case formData.files[0] == undefined:
           alertTextFun("Atleast One Image");
+          break;
+        case formData.files.length >= 4:
+          alertTextFun("Only Three Image Select");
+          console.log("Only Three Image Select");
           break;
         default:
           console.error("else");
@@ -99,7 +96,22 @@ export default function TransitionsModal(props) {
   const handleSnackbarClose = () => {
     setHendleOpen(false);
   };
+  useEffect(() => {
+    if (res) {
+      handleClose()
+      formData.description = "";
+      formData.files = [];
+      formData.price = "";
+      formData.title = "";
+      formData.rating = "";
+    }
+    if (isLoading) {
+      handleClose()
+  }
 
+  
+  }, [res , isLoading , error]);
+  
   return (
     <div className="rounded">
       <Stack spacing={2} direction="row">
@@ -242,16 +254,16 @@ export default function TransitionsModal(props) {
                         <MenuItem value="">
                           <em disabled>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>  0.5: 'Useless'</MenuItem>
-                        <MenuItem value={20}>1: 'Useless+'</MenuItem>
-                        <MenuItem value={30}> 1.5: 'Poor'</MenuItem>
-                        <MenuItem value={40}> 2: 'Poor+'</MenuItem>
-                        <MenuItem value={50}> 2.5: 'Ok'</MenuItem>
-                        <MenuItem value={60}> 3: 'Ok+'</MenuItem>
-                        <MenuItem value={70}> 3.5: 'Good'</MenuItem>
-                        <MenuItem value={80}> 4: 'Good+'</MenuItem>
-                        <MenuItem value={90}> 4.5: 'Excellent'</MenuItem>
-                        <MenuItem value={100}> 5: 'Excellent+'</MenuItem>
+                        <MenuItem value={0.5}>  0.5: 'Useless'</MenuItem>
+                        <MenuItem value={1}>1: 'Useless+'</MenuItem>
+                        <MenuItem value={1.5}> 1.5: 'Poor'</MenuItem>
+                        <MenuItem value={2}> 2: 'Poor+'</MenuItem>
+                        <MenuItem value={2.5}> 2.5: 'Ok'</MenuItem>
+                        <MenuItem value={3}> 3: 'Ok+'</MenuItem>
+                        <MenuItem value={3.5}> 3.5: 'Good'</MenuItem>
+                        <MenuItem value={4}> 4: 'Good+'</MenuItem>
+                        <MenuItem value={4.5}> 4.5: 'Excellent'</MenuItem>
+                        <MenuItem value={5}> 5: 'Excellent+'</MenuItem>
 
                       </Select>
                     </FormControl>

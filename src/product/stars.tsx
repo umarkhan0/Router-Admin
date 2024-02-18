@@ -16,8 +16,9 @@ const labels: { [index: string]: string } = {
   5: 'Excellent+',
 };
 
-export default function TextRating() {
-  const value = 3.5;
+export default function TextRating(props) {
+  
+  const value = props.ratings;
 
   return (
     <Box

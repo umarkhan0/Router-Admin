@@ -14,6 +14,7 @@ const Product = () =>{
         <>
         <BasicCard home={ListProduct} />
         <button onClick={check}>check</button>
+        
         </>
     )
 }

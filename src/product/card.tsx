@@ -6,30 +6,26 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TransitionsModal from '../components/modal';
 import Button from '@mui/material/Button';
-import { CardActionArea } from '@mui/material';
 import TextRating from './stars';
-export default function ActionAreaCard() {
+export default function ActionAreaCard(props) {
+  // console.log(props.image);
+  let {image , price , rating , title} = props;
+  
   const handleModalSubmit = (data) => {
-    console.log('Data received in App:', data);
+    // console.log('Data received in App:', data);
     // You can do whatever you want with the data here
   };
   return (
-    <Card sx={{ maxWidth: 230 , margin: "auto" }}>
+    <Card sx={{ width: "230px" , margin: "auto" }}>
       <div >
-        <CardMedia
-          component="img"
-         height="300"
-          image="https://vmart.pk/wp-content/uploads/2010/12/TL-WR940N-Main.jpg"
-          alt="green iguana"
-          className="object-cover"
-        />
+        <img src={image} alt="cardImage" className=' h-[200px] w-full'  />
         <CardContent>
           <Typography gutterBottom  component="div">
-          <p className=' sm:text-[17px] text-[14px] font-[ralway] font-semibold leading-4'>TP-LINK TL-WR940N 450MBPS WIRELESS N ROUTER</p>
+          <p className=' sm:text-[17px] text-[14px] font-[ralway] font-semibold leading-4'>{title}</p>
           </Typography>
-          <TextRating  />
+          <TextRating ratings={rating}  />
           <Typography variant="body2" color="text.secondary">
-       <p className=' py-1 pl-1'> Rs: <span className=' font-semibold'>9,690 </span></p>
+       <p className=' py-1 pl-1'> Rs: <span className=' font-semibold'>{price}</span></p>
           </Typography>
           <div className=' flex justify-between'>
           <Stack spacing={2} direction="row">

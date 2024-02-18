@@ -1,15 +1,65 @@
 import ActionAreaCard from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import TransitionsModal from "../components/modal";
-import { Stack, Button } from "@mui/material";
-import { useState } from "react";
+import { Snackbar, Alert, Backdrop, CircularProgress } from "@mui/material";
+import { useState, useEffect } from "react";
+import { getProducts } from "../redux/Features/getProducts/getProductsSlice";
 import { addProduct } from "../redux/Features/addProduct/addProductSlice";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 const ListProduct = () => {
-    const { isLoading, res, error } = useSelector((state) => state.newProduct);
-
+    const [loadingOpen, setLoadingOpen] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    // setLoadingOpen(true)
     let dispatch = useDispatch();
+    const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.getAllProducts);
+    const { isLoading, res, error } = useSelector((state) => state.newProduct);
+    useEffect(() => {
+        dispatch(getProducts());
+    }, [dispatch, res]);
+
+    useEffect(() => {
+        if (getAllUsersRes) {
+            console.log('API Response:', getAllUsersRes.products);
+            setFilteredProducts(getAllUsersRes.products);
+            setLoadingOpen(false);
+        };
+
+    }, [getAllUsersRes]);
+    const [sucessOpen, setSicessOpen] = useState(false);
+
+    const handleCloseLoad = (type) => {
+        type(false);
+    };
+    const handleClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        };
+        setSicessOpen(false);
+    };
+    useEffect(() => {
+        if (res) {
+            console.log('API Response:', res);
+            setSicessOpen(true)
+        };
+        if (isLoading) {
+            setLoadingOpen(true)
+        };
+        if (!isLoading) {
+            handleCloseLoad(setLoadingOpen)
+        }
+    }, [res, isLoading, !isLoading]);
+
+
+
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+        const filtered = getAllUsersRes.products.filter(product =>
+            product.title.toLowerCase().includes(event.target.value.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+    };
     const handleModalSubmit = async (formData) => {
         const form = new FormData();
         Object.entries(formData).forEach(([key, value]) => {
@@ -22,21 +72,33 @@ const ListProduct = () => {
             }
         });
 
-        // Set a timeout for the API request (e.g., 10 seconds)
-        // const timeoutId = setTimeout(() => {
-        //     setLoading(false);
-        //     console.error('Request timed out');
-        // }, 10000); // 10 seconds timeout
-
         dispatch(addProduct(form));
-        console.log(res, error);
 
     };
 
 
     return (
         <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loadingOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <div>
 
+
+                <Snackbar open={sucessOpen} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        Product Add Sussecfully
+                    </Alert>
+                </Snackbar>
+            </div>
             {/* <form> */}
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
@@ -45,40 +107,21 @@ const ListProduct = () => {
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5   focus:outline-none  font-medium rounded-lg active:opacity-50 text-sm px-4 py-2 dark:bg-blue-600  bg-[#001f3f]">Search</button>
+                <input type="search" onChange={handleSearch} id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Product" required />
+              
             </div>
             {/* </form>   */}
             <div className="flex md:justify-between justify-center flex-wrap items-center">
-                <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div>
-                <div className="mt-2 m-1 flex">
-                    <ActionAreaCard />
-                </div>
-                <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div>
-                <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div>
-                <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div> <div className="mt-2 m-1">
-                    <ActionAreaCard />
-                </div>
+
+                {filteredProducts.length > 0 ? (
+                    filteredProducts.map((pro) => (
+                        <div key={pro._id} className="mt-2 m-1">
+                            <ActionAreaCard image={pro.images[0]} price={pro.price} rating={pro.rating} title={pro.title} />
+                        </div>
+                    ))
+                ) : (
+                    <p>No such product found</p>
+                )}
 
 
                 <div className=" fixed bottom-0 right-0 m-6 cursor-pointer bg-[#001f3f] p-4 rounded-full">
