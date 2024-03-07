@@ -11,12 +11,13 @@ const ListProduct = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
     // setLoadingOpen(true)
+    const { res: resProduct } = useSelector((state) => state.updateProduct);
     let dispatch = useDispatch();
     const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.getAllProducts);
     const { isLoading, res, error } = useSelector((state) => state.newProduct);
     useEffect(() => {
         dispatch(getProducts());
-    }, [dispatch, res]);
+    }, [dispatch, res , resProduct]);
 
     useEffect(() => {
         if (getAllUsersRes) {
@@ -71,7 +72,7 @@ const ListProduct = () => {
                 form.append(key, value);
             }
         });
-
+console.log(form);
         dispatch(addProduct(form));
 
     };
@@ -100,7 +101,7 @@ const ListProduct = () => {
                 </Snackbar>
             </div>
             {/* <form> */}
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -115,8 +116,8 @@ const ListProduct = () => {
 
                 {filteredProducts.length > 0 ? (
                     filteredProducts.map((pro) => (
-                        <div key={pro._id} className="mt-2 m-1">
-                            <ActionAreaCard image={pro.images[0]} price={pro.price} rating={pro.rating} title={pro.title} />
+                        <div  key={pro._id} className="mt-2 m-1">
+                            <ActionAreaCard proId={pro._id} image={pro.images[0]} price={pro.price} rating={pro.rating} title={pro.title} />
                         </div>
                     ))
                 ) : (

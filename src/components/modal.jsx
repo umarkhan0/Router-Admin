@@ -27,6 +27,7 @@ const style = {
 export default function TransitionsModal(props) {
 
   const { res , isLoading , error } = useSelector((state) => state.newProduct);
+  // const { res , isLoading , error} = useSelector((state) => state.updateProduct);
 
 
   const { paddingx, paddingy } = props || {};

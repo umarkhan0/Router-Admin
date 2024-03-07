@@ -1,17 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiService } from "../../../constant/const";
 import { options } from "../../../constant/const";
-export const addProduct = createAsyncThunk("postProduct", async (credentials) => {
+export const upDateProduct = createAsyncThunk("upDateProduct", async (credentials) => {   
     try {
-        const response = await apiService.post('/postProduct', credentials);
+        const queryParams = new URLSearchParams(window.location.search);
+        const productId = queryParams.get('productId');
+        const response = await apiService.put(`/product/${productId}`, credentials);
         return response.data; 
     } catch (error) {
       throw error.response.data;
     };
 });
 
-const addProductSlice = createSlice({
-    name: "postProduct",
+const upDateProductSlice = createSlice({
+    name: "upDateProduct",
     initialState: {
         isLoading: false,
         res: null,
@@ -19,19 +21,19 @@ const addProductSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addProduct.pending, (state) => {
+            .addCase(upDateProduct.pending, (state) => {
                 state.isLoading = true;
                 state.error = false; 
             })
-            .addCase(addProduct.fulfilled, (state, action) => {
+            .addCase(upDateProduct.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.res = action.payload;
             })
-            .addCase(addProduct.rejected, (state, action) => {
+            .addCase(upDateProduct.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
             });
     },
 });
 
-export default addProductSlice.reducer;
+export default upDateProductSlice.reducer;
