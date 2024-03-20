@@ -8,25 +8,14 @@ import TransitionsModal from '../components/modal';
 import { Link, Button, Stack } from "@mui/material";
 import TextRating from './stars';
 import { upDateProduct } from '../redux/Features/upDateProduct/updateProductSlice';
+import { deleteProduct } from '../redux/Features/DeleteProduct/deleteProdutSlice';
 export default function ActionAreaCard(props) {
   const [loadingOpen, setLoadingOpen] = React.useState(true);
   const handleCloseLoad = (type) => {
     type(false);
   };
   const dispatch = useDispatch();
-  const { isLoading, res, error } = useSelector((state) => state.updateProduct);
-  React.useEffect(() => {
-    if (res) {
-      console.log('API Response:', res);
-      setSicessOpen(true)
-    };
-    if (isLoading) {
-      setLoadingOpen(true)
-    };
-    if (!isLoading) {
-      handleCloseLoad(setLoadingOpen)
-    }
-  }, [res, isLoading, !isLoading]);
+  // const { isLoading, res, error } = useSelector((state) => state.updateProduct);
 
   const { image, price, rating, title, proId } = props;
   const [sucessOpen, setSicessOpen] = React.useState(false);
@@ -52,7 +41,6 @@ export default function ActionAreaCard(props) {
   };
 
   const handleModalOpen = () => {
-    // Append product ID to URL query params
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('productId', proId);
     window.history.pushState({}, '', `${window.location.pathname}?${urlParams}`);
@@ -60,12 +48,7 @@ export default function ActionAreaCard(props) {
 
   return (
     <>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingOpen}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+
       <Snackbar open={sucessOpen} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
@@ -89,10 +72,15 @@ export default function ActionAreaCard(props) {
             </Typography>
             <div className='flex justify-between'>
               <Stack spacing={2} direction="row">
-                <TransitionsModal  onDataUpdate={handleModalSubmit} paddingy="10px" paddingx="20px" name={"Edit"} />
+                <TransitionsModal modalSubmitName="Edit" onDataUpdate={handleModalSubmit} paddingy="10px" paddingx="20px" name={"Edit"} />
               </Stack>
               <Stack spacing={2} direction="row">
-                <Button sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }}>Delete</Button>
+                <Button onClick={
+
+                  () =>
+                    dispatch(deleteProduct())
+
+                } sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }}>Delete</Button>
               </Stack>
             </div>
             <div className='mt-2'>
@@ -101,7 +89,7 @@ export default function ActionAreaCard(props) {
           </CardContent>
         </div>
       </Card>
-    
+
     </>
   );
 };

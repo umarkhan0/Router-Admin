@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk , createAction } from "@reduxjs/toolkit";
 import { apiService } from "../../../constant/const";
-export const upDateProduct = createAsyncThunk("upDateProduct", async (credentials) => {   
+import { options } from "../../../constant/const";
+export const deleteProduct = createAsyncThunk("deleteProduct", async () => {   
     try {
         const queryParams = new URLSearchParams(window.location.search);
         const productId = queryParams.get('productId');
-        const response = await apiService.put(`/product/${productId}`, credentials);
+        const response = await apiService.delete(`/productDelete/${productId}`, options);
         return response.data; 
     } catch (error) {
         throw error.response.data;
     }
 });
+export const resetDeleteProductState = createAction("DeleteProduct/resetState");
 
-export const resetUpdateProductState = createAction("updateProduct/resetState");
-
-const upDateProductSlice = createSlice({
-    name: "upDateProduct",
+const deleteProductSlice = createSlice({
+    name: "deleteProduct",
     initialState: {
         isLoading: false,
         res: null,
@@ -22,19 +22,19 @@ const upDateProductSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(upDateProduct.pending, (state) => {
+            .addCase(deleteProduct.pending, (state) => {
                 state.isLoading = true;
                 state.error = false; 
             })
-            .addCase(upDateProduct.fulfilled, (state, action) => {
+            .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.res = action.payload;
             })
-            .addCase(upDateProduct.rejected, (state, action) => {
+            .addCase(deleteProduct.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
             })
-            .addCase(resetUpdateProductState, (state) => {
+            .addCase(resetDeleteProductState, (state) => {
                 state.isLoading = false;
                 state.res = null;
                 state.error = null;
@@ -42,4 +42,4 @@ const upDateProductSlice = createSlice({
     },
 });
 
-export default upDateProductSlice.reducer;
+export default deleteProductSlice.reducer;

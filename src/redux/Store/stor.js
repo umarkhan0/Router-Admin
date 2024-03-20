@@ -4,6 +4,7 @@ import authVerify from "../Features/LoginConform/TFSlice.js";
 import getAllCustomers from "../Features/Custumers/getCustumersSlice.js";
 import getAllProducts from "../Features/getProducts/getProductsSlice.js";
 import addProduct from "../Features/addProduct/addProductSlice.js";
+import  deleteProduct from "../Features/DeleteProduct/deleteProdutSlice.js";
 import updateProduct from "../Features/upDateProduct/updateProductSlice.js"
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     getAllusers: getAllCustomers,
     newProduct: addProduct,
     getAllProducts: getAllProducts,
-    updateProduct: updateProduct
+    updateProduct: updateProduct,
+    deleteProduct : deleteProduct
   },
 });

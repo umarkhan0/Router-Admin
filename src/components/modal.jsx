@@ -14,7 +14,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "100%",
-  maxWidth: 440, // Set a maximum width to prevent it from getting too wide
+  maxWidth: 440, 
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -25,12 +25,10 @@ const style = {
 };
 
 export default function TransitionsModal(props) {
-
+  const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.updateProduct);
+let [isValidate , setIsValidate] = useState(true)
   const { res , isLoading , error } = useSelector((state) => state.newProduct);
-  // const { res , isLoading , error} = useSelector((state) => state.updateProduct);
-
-
-  const { paddingx, paddingy } = props || {};
+  const { paddingx, paddingy , modalSubmitName } = props || {};
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlrtText] = useState("")
   const [hendleOpen, setHendleOpen] = useState(false);
@@ -106,13 +104,14 @@ export default function TransitionsModal(props) {
       formData.title = "";
       formData.rating = "";
     }
-    if (isLoading) {
+    if (isLoading || getAllUsersLoading) {
       handleClose()
+      console.log("modal closed");
+      // console.log("effectUpdate");
   }
 
   
-  }, [res , isLoading , error]);
-  
+  }, [res , isLoading , error , getAllUsersLoading]);  
   return (
     <div className="rounded">
       <Stack spacing={2} direction="row">
@@ -132,7 +131,6 @@ export default function TransitionsModal(props) {
           },
         }}
       >
-
         <Fade in={open}>
           <Box sx={style}>
             <div >
@@ -294,7 +292,11 @@ export default function TransitionsModal(props) {
                     <Button onClick={() => {
                       handleOpen()
                       handleSubmit()
-                    }} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >Edit</Button>
+                    }} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >{
+
+                      modalSubmitName
+
+                    }</Button>
                   </Stack>
                 </div>
                 <CustomizedSnackbars
@@ -309,4 +311,4 @@ export default function TransitionsModal(props) {
 
     </div>
   );
-}
+};

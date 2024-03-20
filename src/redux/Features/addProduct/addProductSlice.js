@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiService } from "../../../constant/const";
-import { options } from "../../../constant/const";
 export const addProduct = createAsyncThunk("postProduct", async (credentials) => {
     try {
         const response = await apiService.post('/postProduct', credentials);
