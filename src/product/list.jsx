@@ -7,6 +7,7 @@ import { deleteProduct } from "../redux/Features/DeleteProduct/deleteProdutSlice
 import { getProducts } from "../redux/Features/getProducts/getProductsSlice";
 import { addProduct } from "../redux/Features/addProduct/addProductSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { resetAddProduct } from "../redux/Features/addProduct/addProductSlice";
 import { resetUpdateProductState } from "../redux/Features/upDateProduct/updateProductSlice";
 import { resetDeleteProductState } from "../redux/Features/DeleteProduct/deleteProdutSlice";
 const ListProduct = () => {
@@ -46,6 +47,7 @@ const ListProduct = () => {
         if (res) {
             setSuccessText("Product is added");
             setSuccessOpen(true);
+            dispatch(resetAddProduct());
         }
     }, [res])
     useEffect(() => {
