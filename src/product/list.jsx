@@ -22,7 +22,7 @@ const ListProduct = () => {
     const { res: resProduct, isLoading: updateProductLoading } = useSelector((state) => state?.updateProduct);
     const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.getAllProducts);
     const { isLoading, res, error } = useSelector((state) => state.newProduct);
-
+console.log(filteredProducts);
     useEffect(() => {
         dispatch(getProducts());
     }, [dispatch, res, resProduct , resDeleteProduct]);
@@ -115,7 +115,7 @@ const ListProduct = () => {
                 {filteredProducts.length > 0 ? (
                     filteredProducts.map((pro) => (
                         <div key={pro._id} className="mt-2 m-1">
-                            <ActionAreaCard proId={pro._id} image={pro.images[0]} price={pro.price} rating={pro.rating} title={pro.title} />
+                            <ActionAreaCard proId={pro._id} image={pro.images} price={pro.price} rating={pro.rating} title={pro.title} />
                         </div>
                     ))
                 ) : (

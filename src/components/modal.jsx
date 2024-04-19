@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import { Fade, Modal, Box, Backdrop, Button, Stack, Input, TextField, Select, FormControl, MenuItem, InputLabel } from "@mui/material"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CustomizedSnackbars from "./Snackbar";
+// import { getProducts } from "../redux/Features/getProducts/getProductsSlice";
 const style = {
   position: "absolute",
   top: "50%",
@@ -25,8 +26,15 @@ const style = {
 };
 
 export default function TransitionsModal(props) {
+
+
+// console.log("modal activate");
+
+
+
+
   const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.updateProduct);
-let [isValidate , setIsValidate] = useState(true)
+let [isValidate , setIsValidate] = useState(true);
   const { res , isLoading , error } = useSelector((state) => state.newProduct);
   const { paddingx, paddingy , modalSubmitName } = props || {};
   const [open, setOpen] = React.useState(false);
@@ -35,6 +43,8 @@ let [isValidate , setIsValidate] = useState(true)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const image  = null;
+  // console.log(props.
+  //   modalSubmitName);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -52,15 +62,52 @@ let [isValidate , setIsValidate] = useState(true)
 
 
   };
-
   const handleSubmit = () => {
     
     
-    if (formData.title.trim() && formData.description.trim() && formData.files.length < 4 && formData.rating !== "" && formData.price != "" && formData.files[0] != undefined) {
+    if (formData.title.trim() && formData.description.trim() && formData.files.length < 4 && formData.rating !== "" && formData.price != "") {
+      if(props.name == "Edit"){
       props.onDataUpdate(formData);
+    }
+    else if(props.modalSubmitName == "Add" && formData.files[0] != undefined){
+      props.onDataUpdate(formData);
+    }
 
-    } else {
-      console.log("no valid");
+
+else{
+
+
+
+  switch (true) {
+    case !formData.title.trim():
+      alertTextFun("Title is required");
+      break;
+      case !formData.description.trim():
+        alertTextFun("Description is required");
+        break;
+        case formData.rating === "":
+      alertTextFun("Rating is required");
+      break;
+      case formData.price == "":
+        alertTextFun("Price is required");
+      break;
+      case props.name != "Edit":
+        if(formData.files[0] == undefined){
+          alertTextFun("Atleast One Image");
+        }
+        console.log("89");
+      break;
+      case formData.files.length >= 4:
+      alertTextFun("Only Three Image Select");
+      console.log("Only Three Image Select");
+      break;
+    default:
+      console.error("else");
+    }
+
+
+};  } else {
+    console.log("no valid");
       console.log(formData.files.length >= 4);
       switch (true) {
         case !formData.title.trim():
@@ -69,22 +116,25 @@ let [isValidate , setIsValidate] = useState(true)
           case !formData.description.trim():
             alertTextFun("Description is required");
             break;
-        case formData.rating === "":
+            case formData.rating === "":
           alertTextFun("Rating is required");
           break;
-        case formData.price == "":
-          alertTextFun("Price is required");
+          case formData.price == "":
+            alertTextFun("Price is required");
           break;
-        case formData.files[0] == undefined:
-          alertTextFun("Atleast One Image");
+          case props.name != "Edit":
+            if(formData.files[0] == undefined){
+              alertTextFun("Atleast One Image");
+            }
+            console.log("89");
           break;
-        case formData.files.length >= 4:
+          case formData.files.length >= 4:
           alertTextFun("Only Three Image Select");
           console.log("Only Three Image Select");
           break;
         default:
           console.error("else");
-      }
+        }
 
     }
   }
@@ -107,11 +157,17 @@ let [isValidate , setIsValidate] = useState(true)
     if (isLoading || getAllUsersLoading) {
       handleClose()
       console.log("modal closed");
+      formData.description = "";
+      formData.files = [];
+      formData.price = "";
+      formData.title = "";
+      formData.rating = "";
       // console.log("effectUpdate");
   }
-
   
-  }, [res , isLoading , error , getAllUsersLoading]);  
+  
+}, [res , isLoading , error , getAllUsersLoading]); 
+
   return (
     <div className="rounded">
       <Stack spacing={2} direction="row">
