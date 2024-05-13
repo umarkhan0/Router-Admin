@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Fade, Modal, Box, Backdrop, Button, Stack, Input, TextField, Select, FormControl, MenuItem, InputLabel } from "@mui/material"
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import CustomizedSnackbars from "./Snackbar";
+import { getProductThunk } from "../redux/Features/getProduct/getProduct";
 // import { getProducts } from "../redux/Features/getProducts/getProductsSlice";
 const style = {
   position: "absolute",
@@ -15,7 +16,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "100%",
-  maxWidth: 440, 
+  maxWidth: 440,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -27,22 +28,34 @@ const style = {
 
 export default function TransitionsModal(props) {
 
-
-// console.log("modal activate");
+  let dispatch = useDispatch();
 
 
 
 
   const { isLoading: getAllUsersLoading, error: getAllUsersError, res: getAllUsersRes } = useSelector((state) => state?.updateProduct);
-let [isValidate , setIsValidate] = useState(true);
-  const { res , isLoading , error } = useSelector((state) => state.newProduct);
-  const { paddingx, paddingy , modalSubmitName } = props || {};
+  let [isValidate, setIsValidate] = useState(true);
+  const { res, isLoading, error } = useSelector((state) => state.newProduct);
+  const { res: getProduct, isLoading: getProductIsLoading, error: getProductError } = useSelector((state) => state.getProduct);
+
+  const { paddingx, paddingy, modalSubmitName } = props || {};
   const [open, setOpen] = React.useState(false);
   const [alertText, setAlrtText] = useState("")
   const [hendleOpen, setHendleOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [defultTitle, setDefultTitle] = useState("")
+  // const handleOpen = () => {
+
+  //   setOpen(true);
+  //   dispatch(getProductThunk());
+  //   console.log("modal activate");
+
+  // }
+  useEffect(() => {
+
+    console.log(getProduct);
+  }, [getProduct])
   const handleClose = () => setOpen(false);
-  const image  = null;
+  const image = null;
   // console.log(props.
   //   modalSubmitName);
 
@@ -62,79 +75,98 @@ let [isValidate , setIsValidate] = useState(true);
 
 
   };
+  const handleOpen = () => {
+    setOpen(true);
+    dispatch(getProductThunk());
+  }
+
+  useEffect(() => {
+    console.log(getProduct?.product?.title);
+    setDefultTitle(getProduct?.product?.title)
+    setFormData(prevData => ({
+      ...prevData,
+      title: getProduct?.product?.title || "",
+    }));
+    formData.description = "";
+    formData.files = [];
+    formData.price = "";
+    formData.title = getProduct?.product?.title;
+    formData.rating = "";
+  }, [getProduct]);
   const handleSubmit = () => {
-    
-    
+
+
     if (formData.title.trim() && formData.description.trim() && formData.files.length < 4 && formData.rating !== "" && formData.price != "") {
-      if(props.name == "Edit"){
-      props.onDataUpdate(formData);
-    }
-    else if(props.modalSubmitName == "Add" && formData.files[0] != undefined){
-      props.onDataUpdate(formData);
-    }
+      if (props.name == "Edit") {
+        props.onDataUpdate(formData);
+      }
+      else if (props.modalSubmitName == "Add" && formData.files[0] != undefined) {
+        props.onDataUpdate(formData);
+      }
 
 
-else{
+      else {
 
 
 
-  switch (true) {
-    case !formData.title.trim():
-      alertTextFun("Title is required");
-      break;
-      case !formData.description.trim():
-        alertTextFun("Description is required");
-        break;
-        case formData.rating === "":
-      alertTextFun("Rating is required");
-      break;
-      case formData.price == "":
-        alertTextFun("Price is required");
-      break;
-      case props.name != "Edit":
-        if(formData.files[0] == undefined){
-          alertTextFun("Atleast One Image");
+        switch (true) {
+          case !formData.title.trim():
+            alertTextFun("Title is required");
+            break;
+          case !formData.description.trim():
+            alertTextFun("Description is required");
+            break;
+          case formData.rating === "":
+            alertTextFun("Rating is required");
+            break;
+          case formData.price == "":
+            alertTextFun("Price is required");
+            break;
+          case props.name != "Edit":
+            if (formData.files[0] == undefined) {
+              alertTextFun("Atleast One Image");
+            }
+            console.log("89");
+            break;
+          case formData.files.length >= 4:
+            alertTextFun("Only Three Image Select");
+            console.log("Only Three Image Select");
+            break;
+          default:
+            console.error("else");
         }
-        console.log("89");
-      break;
-      case formData.files.length >= 4:
-      alertTextFun("Only Three Image Select");
-      console.log("Only Three Image Select");
-      break;
-    default:
-      console.error("else");
-    }
 
 
-};  } else {
-    console.log("no valid");
+      };
+    } else {
+      console.log("no valid");
       console.log(formData.files.length >= 4);
       switch (true) {
         case !formData.title.trim():
           alertTextFun("Title is required");
           break;
-          case !formData.description.trim():
-            alertTextFun("Description is required");
-            break;
-            case formData.rating === "":
+        case !formData.description.trim():
+          alertTextFun("Description is required");
+          break;
+        case formData.rating === "":
           alertTextFun("Rating is required");
           break;
-          case formData.price == "":
-            alertTextFun("Price is required");
+        case formData.price == "":
+          alertTextFun("Price is required");
           break;
-          case props.name != "Edit":
-            if(formData.files[0] == undefined){
-              alertTextFun("Atleast One Image");
-            }
-            console.log("89");
+        case props.name != "Edit":
+          if (formData.files[0] == undefined) {
+            alertTextFun("Atleast One Image");
+          }
+          console.log("89");
           break;
-          case formData.files.length >= 4:
+        case formData.files.length >= 4:
           alertTextFun("Only Three Image Select");
           console.log("Only Three Image Select");
           break;
         default:
           console.error("else");
-        }
+      }
 
     }
   }
@@ -163,10 +195,10 @@ else{
       formData.title = "";
       formData.rating = "";
       // console.log("effectUpdate");
-  }
-  
-  
-}, [res , isLoading , error , getAllUsersLoading]); 
+    }
+
+
+  }, [res, isLoading, error, getAllUsersLoading]);
 
   return (
     <div className="rounded">
@@ -247,7 +279,7 @@ else{
                     noValidate
                     autoComplete="off"
                   >
-                    <TextField name="title" onChange={handleChange} id="outlined-basic" label="Title"
+                    <TextField defaultValue={defultTitle} name="title" onChange={handleChange} id="outlined-basic" label="Title"
                       inputProps={{ maxLength: 45 }}
                       variant="outlined" />
                   </Box>
@@ -350,9 +382,9 @@ else{
                       handleSubmit()
                     }} sx={{ width: { sm: 30, xs: 10 }, padding: { sm: 1, xs: 0.2 }, fontSize: { sm: 12, xs: 10 } }} variant="contained" style={{ backgroundColor: '#001f3f' }} >{
 
-                      modalSubmitName
+                        modalSubmitName
 
-                    }</Button>
+                      }</Button>
                   </Stack>
                 </div>
                 <CustomizedSnackbars

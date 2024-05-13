@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk , createAction } from "@reduxjs/toolkit";
 import { apiService } from "../../../constant/const";
 import { options } from "../../../constant/const";
-export const getProductThunk = createAsyncThunk("getProducts", async () => {
+export const getProductThunk = createAsyncThunk("getProduct", async () => {
     try {
         const queryParams = new URLSearchParams(window.location.search);
         const productId = queryParams.get('productId');
@@ -12,6 +12,7 @@ export const getProductThunk = createAsyncThunk("getProducts", async () => {
       throw error.response.data;
     }
 });
+export const resetGetProductProductState = createAction("getProduct/resetState");
 
 const getProduct = createSlice({
     name: "getProduct",
@@ -33,6 +34,11 @@ const getProduct = createSlice({
             .addCase(getProductThunk.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
+            })
+            .addCase(resetGetProductProductState, (state) => {
+                state.isLoading = false;
+                state.res = null;
+                state.error = null;
             });
     },
 });

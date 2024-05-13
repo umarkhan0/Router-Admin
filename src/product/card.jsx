@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Card from '@mui/material/Card';
+import { NavLink } from 'react-router-dom';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch } from 'react-redux';
+import DetailProduct from './productDetail';
 import TransitionsModal from '../components/modal';
 import { Link, Button, Stack } from "@mui/material";
 import TextRating from './stars';
@@ -52,7 +54,6 @@ export default function ActionAreaCard(props) {
 
 
     // dispatch(getProductThunk());
-    // dispatch(getProducts())
 
 
 
@@ -78,18 +79,18 @@ export default function ActionAreaCard(props) {
         <div onClick={handleModalOpen}>
           <div 
             className='relative h-[300px] w-full overflow-hidden'
-            onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
-            onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <img 
-              src={props.image[0]} // Display the first image by default
+              src={props.image[0]}
               alt="cardImage" 
-              className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ease-in-out ${isHovered ? 'opacity-0' : 'opacity-100'}`} // Fade out when hovered
+              className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ease-in-out ${isHovered ? 'opacity-0' : 'opacity-100'}`}
             />
             <img 
-              src={props.image[1] || props.image[0]} // Display the second image on hover
+              src={props.image[1] || props.image[0]} 
               alt="cardImage" 
-              className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ease-in-out ${isHovered ? 'opacity-100' : 'opacity-0'}`} // Fade in when hovered
+              className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ease-in-out ${isHovered ? 'opacity-100' : 'opacity-0'}`}
             />
           </div>
           <CardContent>
@@ -117,7 +118,7 @@ export default function ActionAreaCard(props) {
               </Stack>
             </div>
             <div className='mt-2'>
-              <Link href="#">View Detail</Link>
+            <NavLink to={"/detail"}>  View Detail</NavLink>
             </div>
           </CardContent>
         </div>
